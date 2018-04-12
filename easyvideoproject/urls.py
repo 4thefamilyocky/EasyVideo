@@ -19,5 +19,10 @@ from video import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', views.index, name='index')
+    url(r'^$', views.index, name='index'),
+    url(r'^video/(?P<vid>\d+)/$', views.videoDetail, name='videoDetail'),
+    url(r'^history/$', views.viewHistory, name="viewHistory"),
+    url(r'^cate/(?P<cateid>\d+)/$', views.videoCate, name='videoCate'),
+    url(r'^login/$', views.login, name="login"),
+    url(r'^register/$', views.register, name="register"),
 ]
