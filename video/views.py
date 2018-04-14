@@ -34,7 +34,7 @@ def videoDetail(request, vid):
     '''
     视频详情
     :param request:
-    :return:
+    :return:页数id
     '''
     return HttpResponse('视频{0}详情'.format(vid))
 
@@ -52,7 +52,7 @@ def videoCate(request, cateid):
     '''
     视频分页
     :param request:
-    :param cateid:
+    :param cateid:页数id
     :return:
     '''
     return HttpResponse('视频{0}页'.format(cateid))
