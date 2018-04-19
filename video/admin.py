@@ -15,7 +15,8 @@ class VideoAdmin(admin.ModelAdmin):
 
 
 class LabelAdmin(admin.ModelAdmin):
-    list_display = ['id', 'video', 'lable']
+    # list_display = ['id', 'video', 'lable']
+    pass
 
 
 class SetAdmin(admin.ModelAdmin):
@@ -28,8 +29,8 @@ class HistoryAdmin(admin.ModelAdmin):
     list_filter = ['user', 'video', 'view_date']
 
 
-admin.site.register(Cate, )
-admin.site.register(Video, )
-admin.site.register(Label, )
-admin.site.register(Set, )
-admin.site.register(History, )
+admin.site.register(Cate, CateAdmin)
+admin.site.register(Video, VideoAdmin)
+admin.site.register(Label, LabelAdmin)
+admin.site.register(Set, SetAdmin)
+admin.site.register(History, HistoryAdmin)
