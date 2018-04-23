@@ -29,11 +29,6 @@ def get_duration(filename):
     s = subprocess.Popen('ffmpeg -i "{0}"'.format(filename), shell=True, stdout=subprocess.PIPE,
                          stderr=subprocess.STDOUT)
     ss = s.stdout.read()
-    print('--' * 50)
-
-    print(str(ss))
-
-    print('--' * 50)
 
     duration = re.findall(r'Duration:(.*?),', str(ss))[0]
     print(filename, duration)
