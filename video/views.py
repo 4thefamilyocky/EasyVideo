@@ -1,4 +1,5 @@
 from django.shortcuts import render, HttpResponse
+from .models import *
 
 
 # Create your views here.
@@ -8,7 +9,23 @@ def index(request):
     :param request:
     :return:
     '''
-    return HttpResponse('首页')
+    # 获取视频分类作为菜单数据
+    menu_list = Cate.objects.all()
+    # 返回最新的3条数据
+    new_list = Video.objects.all().order_by('-create_time')[:3]
+    # 返回最热的4条数据
+    hot_list = Video.objects.all().order_by('-views')[:4]
+    # 返回Vine数据库最新8条数据
+    python_list = Video.objects.filter(cate=Cate.objects.get(name='Reaction')).order_by('-create_time')[:8]
+    analysis_list_1 = Video.objects.filter(cate=Cate.objects.get(name='Reaction')).order_by('-create_time')[:4]
+    analysis_list_2 = Video.objects.filter(cate=Cate.objects.get(name='Reaction')).order_by('-create_time')[4:8]
+    analysis_list_3 = Video.objects.filter(cate=Cate.objects.get(name='Reaction')).order_by('-create_time')[8:12]
+
+    gui_list = Video.objects.filter(cate=Cate.objects.get(name='Vine')).order_by('-create_time')[:4]
+
+    web_list = Video.objects.filter(cate=Cate.objects.get(name='抖音')).order_by('-create_time')[:4]
+
+    return render(request, 'index.html', locals())
 
 
 def login(request):
