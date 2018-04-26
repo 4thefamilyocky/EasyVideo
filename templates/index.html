@@ -1,12 +1,13 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load staticfiles %}
 {% block title %} 首页 {% endblock %}
 {% block right-content %}
+
     <div class="main-grids">
         <!-- 第一行栏目 -->
         <div class="top-grids">
             <div class="recommended-info">
-                <h3>最新教程</h3>
+                <h3>最新</h3>
             </div>
             {% if new_list %}
                 {% for item in new_list %}
@@ -32,7 +33,7 @@
         <div class="recommended">
             <div class="recommended-grids">
                 <div class="recommended-info">
-                    <h3>最热教程</h3>
+                    <h3>最热</h3>
                 </div>
                 {% if hot_list %}
                     {% for item in hot_list %}
@@ -47,7 +48,7 @@
                                 <h5><a href="{% url 'videoDetail' item.id %}" class="title">{{ item.name }}</a></h5>
                                 <div class="slid-bottom-grids">
                                     <div class="slid-bottom-grid">
-                                        <p class="author author-info"><a href="#" class="author">Python学院</a></p>
+                                        <p class="author author-info"><a href="#" class="author">EZ Hot</a></p>
                                     </div>
                                     <div class="slid-bottom-grid slid-bottom-right">
                                         <p class="views views-info">{{ item.views }} views</p>
@@ -66,7 +67,7 @@
         <div class="recommended">
             <div class="recommended-grids">
                 <div class="recommended-info">
-                    <h3>数据分析<span style="float:right;"><a href="{% url 'videoCate' 2 %}">更多>>></a></span></h3>
+                    <h3>Reactions<span style="float:right;"><a href="{% url 'videoCate' 2 %}">更多>>></a></span></h3>
                 </div>
                 <script src="{% static 'js/responsiveslides.min.js' %}"></script>
                 <script>
@@ -111,7 +112,7 @@
                                                 <div class="slid-bottom-grids">
                                                     <div class="slid-bottom-grid">
                                                         <p class="author author-info"><a href="#"
-                                                                                         class="author">Python学院</a></p>
+                                                                                         class="author">Reaction</a></p>
                                                     </div>
                                                     <div class="slid-bottom-grid slid-bottom-right">
                                                         <p class="views views-info">{{ item.views }} 观看</p>
@@ -145,7 +146,7 @@
                                                 <div class="slid-bottom-grids">
                                                     <div class="slid-bottom-grid">
                                                         <p class="author author-info"><a href="#"
-                                                                                         class="author">Python学院</a></p>
+                                                                                         class="author">Reaction</a></p>
                                                     </div>
                                                     <div class="slid-bottom-grid slid-bottom-right">
                                                         <p class="views views-info">{{ item.views }} views</p>
@@ -180,7 +181,7 @@
                                                 <div class="slid-bottom-grids">
                                                     <div class="slid-bottom-grid">
                                                         <p class="author author-info"><a href="#"
-                                                                                         class="author">Python学院</a></p>
+                                                                                         class="author">Reaction</a></p>
                                                     </div>
                                                     <div class="slid-bottom-grid slid-bottom-right">
                                                         <p class="views views-info">{{ item.views }} views</p>
@@ -203,7 +204,7 @@
         <div class="recommended">
             <div class="recommended-grids">
                 <div class="recommended-info">
-                    <h3>GUI开发<span style="float:right;"><a href="{% url 'videoCate' 3 %}">更多>>></a></span></h3>
+                    <h3>Vine<span style="float:right;"><a href="{% url 'videoCate' 3 %}">更多>>></a></span></h3>
                 </div>
                 {% if gui_list %}
                     {% for item in gui_list %}
@@ -218,7 +219,7 @@
                                 <h5><a href="{% url 'videoDetail' item.id %}" class="title">{{ item.name }}</a></h5>
                                 <div class="slid-bottom-grids">
                                     <div class="slid-bottom-grid">
-                                        <p class="author author-info"><a href="#" class="author">Python学院</a></p>
+                                        <p class="author author-info"><a href="#" class="author">Vine Style</a></p>
                                     </div>
                                     <div class="slid-bottom-grid slid-bottom-right">
                                         <p class="views views-info">{{ item.views }} views</p>
@@ -237,7 +238,7 @@
         <div class="recommended">
             <div class="recommended-grids">
                 <div class="recommended-info">
-                    <h3>Web开发<span style="float:right;"><a href="{% url 'videoCate' 5 %}">更多>>></a></span></h3>
+                    <h3>抖音<span style="float:right;"><a href="{% url 'videoCate' 5 %}">更多>>></a></span></h3>
                 </div>
                 {% if web_list %}
                     {% for item in web_list %}
@@ -252,7 +253,7 @@
                                 <h5><a href="{% url 'videoDetail' item.id %}" class="title">{{ item.name }}</a></h5>
                                 <div class="slid-bottom-grids">
                                     <div class="slid-bottom-grid">
-                                        <p class="author author-info"><a href="#" class="author">Python学院</a></p>
+                                        <p class="author author-info"><a href="#" class="author">Dou Yin</a></p>
                                     </div>
                                     <div class="slid-bottom-grid slid-bottom-right">
                                         <p class="views views-info">{{ item.views }} views</p>

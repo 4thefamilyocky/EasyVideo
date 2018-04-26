@@ -1,4 +1,6 @@
 from django.shortcuts import render, HttpResponse
+from django.core.paginator import Paginator, InvalidPage, EmptyPage, PageNotAnInteger
+
 from .models import *
 
 
@@ -9,6 +11,7 @@ def index(request):
     :param request:
     :return:
     '''
+
     # 获取视频分类作为菜单数据
     menu_list = Cate.objects.all()
     # 返回最新的3条数据
@@ -72,4 +75,24 @@ def videoCate(request, cateid):
     :param cateid:页数id
     :return:
     '''
-    return HttpResponse('视频{0}页'.format(cateid))
+    menu_list = Cate.objects.all()
+    cate_id = Cate.objects.get(id=cateid)
+    video_list = Video.objects.filter(cate=cate_id)
+    cate_video_list = getPage(request, video_list)
+    return render(request, 'cate.html', locals())
+
+
+def getPage(request, video_list):
+    '''
+    分页罗辑
+    :param request:
+    :param video_list:
+    :return:
+    '''
+    paginator = Paginator(video_list, 12)
+    try:
+        page = int(request.GET.get('page', 1))
+        video_list = paginator.page(page)
+    except(EmptyPage, InvalidPage, PageNotAnInteger):
+        video_list = paginator.page(1)
+    return video_list
