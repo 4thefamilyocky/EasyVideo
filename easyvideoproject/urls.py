@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from django.views.static import serve
+from django.conf import settings
 from video import views
 
 urlpatterns = [
@@ -25,4 +27,7 @@ urlpatterns = [
     url(r'^cate/(?P<cateid>\d+)/$', views.videoCate, name='videoCate'),
     url(r'^login/$', views.login, name="login"),
     url(r'^register/$', views.register, name="register"),
+    url(r'^like/$', views.like, name='like'),
+    url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT, }, name='media'),
+    url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT, }, name='static'),
 ]

@@ -1,5 +1,7 @@
 from django.shortcuts import render, HttpResponse
 from django.core.paginator import Paginator, InvalidPage, EmptyPage, PageNotAnInteger
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 
 from .models import *
 
@@ -27,6 +29,8 @@ def index(request):
     gui_list = Video.objects.filter(cate=Cate.objects.get(name='Vine')).order_by('-create_time')[:4]
 
     web_list = Video.objects.filter(cate=Cate.objects.get(name='抖音')).order_by('-create_time')[:4]
+
+    kuaishou_list = Video.objects.filter(cate=Cate.objects.get(name='快手')).order_by('-create_time')[:4]
 
     return render(request, 'index.html', locals())
 
@@ -56,7 +60,36 @@ def videoDetail(request, vid):
     :param request:
     :return:页数id
     '''
-    return HttpResponse('视频{0}详情'.format(vid))
+    menu_list = Cate.objects.all()
+    # 获取视频数据
+    id = int(vid)
+    video = Video.objects.get(id=vid)
+    # 获取视频专辑
+    try:
+        set_name = Set.objects.get(video=id).name
+        video_set = Set.objects.filter(name=set_name)
+    except:
+        random_video = Video.objects.order_by('?')[:5]
+    # 增加访问人数
+    try:
+        video.views += 1
+        video.save()
+    except Exception as e:
+        print(e)
+    # 获取点赞人数
+    try:
+        likes = Likes.objects.filter(video=video).count()
+    except:
+        likes = 0
+    # 添加观看记录
+    try:
+        if request.user.is_authenticated:
+            user = User.objects.get(username=request.user.username)
+            history = History.objects.create(user=user, video=video)
+            history.save()
+    except Exception as e:
+        print(e)
+    return render(request, 'single.html', locals())
 
 
 def viewHistory(request):
@@ -96,3 +129,27 @@ def getPage(request, video_list):
     except(EmptyPage, InvalidPage, PageNotAnInteger):
         video_list = paginator.page(1)
     return video_list
+
+
+@login_required
+def like(request):
+    '''
+    视频功能
+    :param request:
+    :return:
+    '''
+    if request.method == 'POST':
+        videoid = request.POST.get("vid")
+        video = Video.objects.get(id=videoid)
+        user = request.user
+        try:
+            Likes.objects.get_or_create(
+                user=user,
+                video=video,
+            )
+            # InfoKeep.save()
+            return JsonResponse({"success": True})
+        except Exception as e:
+            return JsonResponse({"success": False})
+    else:
+        return JsonResponse({"success": False})
