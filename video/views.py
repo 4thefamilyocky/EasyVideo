@@ -1,7 +1,9 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
 from django.core.paginator import Paginator, InvalidPage, EmptyPage, PageNotAnInteger
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login
+from django.contrib.auth.models import User
 
 from .models import *
 
@@ -50,7 +52,34 @@ def register(request):
     :param request:
     :return:
     '''
-    return HttpResponse('注册')
+    if request.method == 'GET':
+        request.session['login_from'] = request.META.get('HTTP_REFERER', '/')
+        return render(request, 'register.html', locals())
+    elif request.method == 'POST':
+        # 接收表单数据
+        username = request.POST.get("email", '')
+        password = request.POST.get("password", '')
+        email = request.POST.get("email", '')
+        checkcode = request.POST.get("check_code")
+        # 判断数据是否正确
+        if username != '' and password != '' and checkcode == request.session['CheckCode'].lower():
+            # 判断用户是否存在
+            if User.objects.filter(username=username).exists() == False:
+                # 注册
+                user = User.objects.create_user(username=username, email=email, password=password)
+                user.save()
+                # 登录
+                user.backend = 'django.contrib.auth.backends.ModelBackend'
+                login(request, user)
+                # 重定向跳转
+                return redirect(request.session['login_from'], '/')
+            else:
+                errormsg = '用户名已存在！'
+                return render(request, 'register.html', locals())
+        else:
+            return JsonResponse({"success": False, "msg": "信息填写错误:{0},{1},{2},{3}".format(username, password, checkcode,
+                                                                                          request.session[
+                                                                                              'CheckCode'].lower())})
 
 
 # 注意!类似vid的参数一定要加上
@@ -153,3 +182,21 @@ def like(request):
             return JsonResponse({"success": False})
     else:
         return JsonResponse({"success": False})
+
+
+def check_code(request):
+    '''
+    验证码
+    :param request:
+    :return:
+    '''
+    import io
+    from . import check_code as CheckCode
+
+    stream = io.BytesIO()
+    # img图片对象,code在图像中写的内容
+    img, code = CheckCode.create_validate_code()
+    img.save(stream, "png")
+    # 图片页面中显示,立即把session中的CheckCode更改为目前的随机字符串值
+    request.session["CheckCode"] = code
+    return HttpResponse(stream.getvalue())

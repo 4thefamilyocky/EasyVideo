@@ -30,4 +30,5 @@ urlpatterns = [
     url(r'^like/$', views.like, name='like'),
     url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT, }, name='media'),
     url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT, }, name='static'),
+    url(r'^check_code', views.check_code, name='check_code'),
 ]
