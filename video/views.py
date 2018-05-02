@@ -127,7 +127,15 @@ def viewHistory(request):
     :param request:
     :return:
     '''
-    return HttpResponse('视频观看历史')
+    # 获取视频分类作为菜单数据
+    menu_list = Cate.objects.all()
+    # 获取用户
+    user = User.objects.get(username=request.user.username)
+    # 获取用户的观看历史记录
+    history_list = History.objects.filter(user=user)
+    # 分页
+    cate_video_list = getPage(request, history_list)
+    return render(request, 'history.html', locals())
 
 
 def videoCate(request, cateid):
