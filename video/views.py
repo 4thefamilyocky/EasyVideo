@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from django.contrib.auth.models import User
+from django.contrib.auth import logout
 
 from .models import *
 
@@ -208,3 +209,11 @@ def check_code(request):
     # 图片页面中显示,立即把session中的CheckCode更改为目前的随机字符串值
     request.session["CheckCode"] = code
     return HttpResponse(stream.getvalue())
+
+
+def logOut(request):
+    try:
+        logout(request)
+    except Exception as e:
+        print(e)
+        return redirect(request.META['HTTP_PEFERER'])
