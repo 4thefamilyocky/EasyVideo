@@ -8,10 +8,23 @@
                 <div class="song-info">
                     <h3>{{ video.name }}</h3>
                 </div>
+
                 <div class="video-grid">
-                    <!-- <iframe src="http://player.youku.com/player.php/sid/XMTg3Nzg4MzY4NA==/v.swf" allowfullscreen='true'></iframe> -->
-                    <video width=600 src="/media/{{ video.link }}" controls preload></video>
+                    {% if video.passwd == None %}
+                        <video width=600 src="/media/{{ video.link }}" controls preload></video>
+                    {% else %}
+                        {% if user.is_authenticated %}
+                            <video width=600 src="/media/{{ video.link }}" controls preload></video>
+                        {% else %}
+                            <div class="signin"><h4><strong>对不起！本视频只能登录后观看，你可以</strong></h4></div>
+                            <div class="signin"><a href="{% url 'register' %}"
+                                                   class="play-icon popup-with-zoom-anim">注册</a></div>
+                            <div class="signin"><a href="{% url 'login' %}"
+                                                   class="play-icon popup-with-zoom-anim">登录</a></div>
+                        {% endif %}
+                    {% endif %}
                 </div>
+
                 <div class="share">
                     <ul>
                         <div class="col-md-4">
